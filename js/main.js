@@ -1738,83 +1738,92 @@ function renderMillaJobs(jobs) {
 
   if (!millaJobsList) return;
 
+  // ==========================================
+  // SIN VACANTES
+  // ==========================================
 
-  if (!jobs.length) {
+  if (!Array.isArray(jobs) || jobs.length === 0) {
 
     millaJobsList.innerHTML = `
       <div class="milla-jobs-empty">
-        Actualmente no tenemos vacantes disponibles.
+
+        <span class="milla-jobs-empty-label">
+          SIN VACANTES DISPONIBLES
+        </span>
+
+        <p>
+          Actualmente no contamos con posiciones abiertas.
+          Puedes enviarnos tu CV y considerararemos tu perfil
+          para futuras oportunidades.
+        </p>
+
       </div>
     `;
 
     return;
-
   }
 
 
+  // ==========================================
+  // CON VACANTES
+  // ==========================================
+
   millaJobsList.innerHTML =
-    jobs.map(
-      (job, index) => {
+    jobs.map((job, index) => {
 
-        const number =
-          String(index + 1)
-            .padStart(2, '0');
+      const number =
+        String(index + 1).padStart(2, '0');
 
+      return `
+        <article
+          class="milla-job-card milla-job-card-active"
+          data-job="${escapeMillaHTML(job.vacante)}"
+          data-job-area="${escapeMillaHTML(job.area)}"
+        >
 
-        return `
-          <article
-            class="milla-job-card milla-job-card-active"
-            data-job="${escapeMillaHTML(job.vacante)}"
-            data-job-area="${escapeMillaHTML(job.area)}"
+          <div class="milla-job-index">
+            ${number}
+          </div>
+
+          <div class="milla-job-main">
+
+            <span class="milla-job-type">
+              VACANTE ABIERTA
+            </span>
+
+            <h3>
+              ${escapeMillaHTML(job.vacante)}
+            </h3>
+
+            <p class="milla-job-meta">
+              ${escapeMillaHTML(job.ubicacion)}
+              ·
+              ${escapeMillaHTML(job.tipo)}
+            </p>
+
+            <p>
+              ${escapeMillaHTML(job.descripcion)}
+            </p>
+
+          </div>
+
+          <button
+            type="button"
+            class="milla-job-arrow"
+            data-job-open="${escapeMillaHTML(job.vacante)}"
+            aria-label="Postularse a ${escapeMillaHTML(job.vacante)}"
           >
 
-            <div class="milla-job-index">
-              ${number}
-            </div>
+            <iconify-icon
+              icon="solar:arrow-right-up-outline"
+            ></iconify-icon>
 
+          </button>
 
-            <div class="milla-job-main">
+        </article>
+      `;
 
-              <span class="milla-job-type">
-                VACANTE ABIERTA
-              </span>
-
-              <h3>
-                ${escapeMillaHTML(job.vacante)}
-              </h3>
-
-              <p class="milla-job-meta">
-                ${escapeMillaHTML(job.ubicacion)}
-                ·
-                ${escapeMillaHTML(job.tipo)}
-              </p>
-
-              <p>
-                ${escapeMillaHTML(job.descripcion)}
-              </p>
-
-            </div>
-
-
-            <button
-              type="button"
-              class="milla-job-arrow"
-              data-job-open="${escapeMillaHTML(job.vacante)}"
-              aria-label="Postularse a ${escapeMillaHTML(job.vacante)}"
-            >
-
-              <iconify-icon
-                icon="solar:arrow-right-up-outline"
-              ></iconify-icon>
-
-            </button>
-
-          </article>
-        `;
-
-      }
-    )
-    .join('');
+    }).join('');
 }
 
 
