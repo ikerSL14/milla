@@ -1509,6 +1509,337 @@ document.addEventListener("DOMContentLoaded", () => {
    MILLA — CONTACTO REVEAL
 ========================================================= */
 
+/* ==========================================================
+   MILLA — VACANTES DESDE GOOGLE SHEETS
+========================================================== */
+
+const MILLA_JOBS_CSV_URL =
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vTx7qLRFyVcZyQ2zH2EfQG8tI8YWnAZ9rdA4HIkvk0QXxnNCToIvb7OXql_odWQhuF4Gu7erLZQ9ofg/pub?gid=1390203992&single=true&output=csv';
+
+const millaJobsList =
+  document.getElementById('millaJobsList');
+
+
+/* ==========================================================
+   PARSER CSV
+========================================================== */
+
+function parseMillaCSV(text) {
+
+  const rows = [];
+
+  let row = [];
+  let value = '';
+  let insideQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+
+    const char = text[i];
+    const next = text[i + 1];
+
+    if (char === '"' && insideQuotes && next === '"') {
+
+      value += '"';
+      i++;
+
+    }
+
+    else if (char === '"') {
+
+      insideQuotes =
+        !insideQuotes;
+
+    }
+
+    else if (char === ',' && !insideQuotes) {
+
+      row.push(value);
+      value = '';
+
+    }
+
+    else if (
+      (char === '\n' || char === '\r') &&
+      !insideQuotes
+    ) {
+
+      if (char === '\r' && next === '\n') {
+        i++;
+      }
+
+      row.push(value);
+      value = '';
+
+      if (row.some(cell => cell.trim() !== '')) {
+        rows.push(row);
+      }
+
+      row = [];
+
+    }
+
+    else {
+
+      value += char;
+
+    }
+
+  }
+
+
+  if (value !== '' || row.length) {
+
+    row.push(value);
+
+    if (row.some(cell => cell.trim() !== '')) {
+      rows.push(row);
+    }
+
+  }
+
+
+  return rows;
+}
+
+
+/* ==========================================================
+   GENERAR VACANTES
+========================================================== */
+
+async function loadMillaJobs() {
+
+  if (!millaJobsList) return;
+
+
+  millaJobsList.innerHTML = `
+    <div class="milla-jobs-loading">
+      Cargando vacantes...
+    </div>
+  `;
+
+
+  try {
+
+    const response =
+      await fetch(
+        MILLA_JOBS_CSV_URL
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        'No se pudo obtener la información de vacantes.'
+      );
+
+    }
+
+
+    const csvText =
+      await response.text();
+
+
+    const rows =
+      parseMillaCSV(csvText);
+
+
+    if (!rows.length) {
+
+      throw new Error(
+        'La hoja de vacantes está vacía.'
+      );
+
+    }
+
+
+    /*
+     * Primera fila = encabezados
+     */
+
+    const headers =
+      rows[0].map(
+        header =>
+          header
+            .trim()
+            .toLowerCase()
+      );
+
+
+    const jobs =
+      rows
+        .slice(1)
+        .map(row => {
+
+          const job = {};
+
+          headers.forEach(
+            (header, index) => {
+
+              job[header] =
+                (row[index] || '').trim();
+
+            }
+          );
+
+          return job;
+
+        })
+
+
+        /*
+         * Solo publicamos las que digan SI
+         */
+
+        .filter(
+          job =>
+            job.publicar?.toUpperCase() === 'SI'
+        )
+
+
+        /*
+         * Orden
+         */
+
+        .sort(
+          (a, b) =>
+            Number(a.orden || 999) -
+            Number(b.orden || 999)
+        );
+
+
+    renderMillaJobs(jobs);
+
+  }
+
+  catch (error) {
+
+    console.error(
+      'MILLA — Error cargando vacantes:',
+      error
+    );
+
+
+    millaJobsList.innerHTML = `
+      <div class="milla-jobs-empty">
+        Actualmente no fue posible cargar las vacantes.
+      </div>
+    `;
+
+  }
+
+}
+
+
+/* ==========================================================
+   RENDERIZAR TARJETAS
+========================================================== */
+
+function renderMillaJobs(jobs) {
+
+  if (!millaJobsList) return;
+
+
+  if (!jobs.length) {
+
+    millaJobsList.innerHTML = `
+      <div class="milla-jobs-empty">
+        Actualmente no tenemos vacantes disponibles.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  millaJobsList.innerHTML =
+    jobs.map(
+      (job, index) => {
+
+        const number =
+          String(index + 1)
+            .padStart(2, '0');
+
+
+        return `
+          <article
+            class="milla-job-card milla-job-card-active"
+            data-job="${escapeMillaHTML(job.vacante)}"
+            data-job-area="${escapeMillaHTML(job.area)}"
+          >
+
+            <div class="milla-job-index">
+              ${number}
+            </div>
+
+
+            <div class="milla-job-main">
+
+              <span class="milla-job-type">
+                VACANTE ABIERTA
+              </span>
+
+              <h3>
+                ${escapeMillaHTML(job.vacante)}
+              </h3>
+
+              <p class="milla-job-meta">
+                ${escapeMillaHTML(job.ubicacion)}
+                ·
+                ${escapeMillaHTML(job.tipo)}
+              </p>
+
+              <p>
+                ${escapeMillaHTML(job.descripcion)}
+              </p>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="milla-job-arrow"
+              data-job-open="${escapeMillaHTML(job.vacante)}"
+              aria-label="Postularse a ${escapeMillaHTML(job.vacante)}"
+            >
+
+              <iconify-icon
+                icon="solar:arrow-right-up-outline"
+              ></iconify-icon>
+
+            </button>
+
+          </article>
+        `;
+
+      }
+    )
+    .join('');
+}
+
+
+/* ==========================================================
+   SEGURIDAD — ESCAPAR HTML
+========================================================== */
+
+function escapeMillaHTML(value) {
+
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+
+}
+
+
+/* ==========================================================
+   CARGAR AL INICIAR
+========================================================== */
+
+loadMillaJobs();
+
 const millaContact = document.querySelector('.milla-contact');
 
 if (millaContact) {
@@ -1591,10 +1922,7 @@ const millaCareerArea =
     'career-area'
   );
 
-const millaJobOpenButtons =
-  document.querySelectorAll(
-    '[data-job-open]'
-  );
+
 
 function resetMillaCareerForm() {
 
@@ -1829,6 +2157,65 @@ function closeMillaCareerModal() {
 
 }
 
+/* ==========================================================
+   ABRIR — VACANTE DINÁMICA
+========================================================== */
+
+if (millaJobsList) {
+
+  millaJobsList.addEventListener(
+    'click',
+    event => {
+
+      const button =
+        event.target.closest(
+          '[data-job-open]'
+        );
+
+
+      if (!button) return;
+
+
+      const jobName =
+        button.dataset.jobOpen;
+
+
+      const jobCard =
+        button.closest(
+          '.milla-job-card'
+        );
+
+
+      const areaName =
+        jobCard?.dataset.jobArea;
+
+
+      if (!jobName || !areaName) {
+
+        console.error(
+          'MILLA — La vacante no tiene nombre o área.'
+        );
+
+        return;
+
+      }
+
+
+      resetMillaCareerForm();
+
+
+      prepareMillaCareerApplication(
+        jobName,
+        areaName
+      );
+
+
+      openMillaCareerModal();
+
+    }
+  );
+
+}
 
 /* ==========================================================
    ABRIR — POSTULACIÓN GENERAL
@@ -1859,41 +2246,7 @@ millaCareerCloseButtons.forEach(button => {
 
 });
 
-/* ==========================================================
-   ABRIR — VACANTE ESPECÍFICA
-========================================================== */
 
-millaJobOpenButtons.forEach(button => {
-
-  button.addEventListener(
-    'click',
-    () => {
-
-      const jobName =
-        button.dataset.jobOpen;
-
-      /*
-       * Por ahora especificamos manualmente
-       * el área correspondiente.
-       */
-
-      const areaName =
-        button
-          .closest('.milla-job-card')
-          ?.dataset.jobArea || 'Ingeniería';
-
-
-      prepareMillaCareerApplication(
-        jobName,
-        areaName
-      );
-
-      openMillaCareerModal();
-
-    }
-  );
-
-});
 
 
 /* ==========================================================

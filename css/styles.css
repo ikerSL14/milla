@@ -12265,3 +12265,20 @@ iconify-icon {
   background:
     #fafafa;
 }
+
+.milla-jobs-list {
+  display: grid;
+  gap: 14px;
+}
+
+.milla-jobs-loading {
+  padding: 30px 0;
+  color: rgba(255,255,255,.55);
+  font-size: .9rem;
+}
+
+.milla-jobs-empty {
+  padding: 30px;
+  border: 1px solid rgba(255,255,255,.08);
+  color: rgba(255,255,255,.6);
+}
