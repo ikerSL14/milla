@@ -117,18 +117,34 @@ img{display:block;max-width:100%}
   color:#d1b464
 }
 .hero{position:relative;min-height:660px;padding-top:var(--header);overflow:hidden;color:#fff;background:#151a1d}
-.hero-media{position:absolute;inset:0 0 0;background:url("../assets/img/hero-milla3.png") center/cover no-repeat}
-.hero-overlay{position:absolute;background:linear-gradient(90deg,rgba(9,14,17,.93),rgba(9,14,17,.72) 42%,rgba(9,14,17,.28) 100%),linear-gradient(180deg,transparent 45%,rgba(9,14,17,.72))}
+.hero-media{position:absolute;inset:0 0 0;background:url("../assets/img/hero-milla7.png") center/cover no-repeat;}
+.hero-overlay{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+
+  background:linear-gradient(
+    90deg,
+    rgba(7,11,15,0) 0%,
+    rgba(7,11,15,.12) 10%,
+    rgba(7,11,15,.72) 28%,
+    rgba(7, 11, 15, 0.651) 40%,
+    rgba(7, 11, 15, 0.281) 52%,
+    rgba(7,11,15,.12) 68%,
+    rgba(7,11,15,0) 80%
+  );
+}
 .hero-content{position:relative;z-index:2;display:flex;align-items:center;min-height:650px;padding:40px 0 155px}
 .hero-copy{width:min(740px,65%)}
 .eyebrow,.section-kicker{display:inline-block;margin-bottom:18px;color:var(--gold2);font-size:.76rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
 .hero h1{margin:0;font-size:clamp(3.1rem,5vw,4rem);line-height:1.02;letter-spacing:-.045em}
 .hero h1 span{display:block;color:#efd59d}
-.hero p{max-width:650px;margin:24px 0 0;color:rgba(255,255,255,.82);font-size:1.04rem;line-height:1.8}
+.hero p{max-width:550px;margin:24px 0 0;color:rgba(255, 255, 255, 0.938);font-size:1.04rem;line-height:1.8}
 .hero-actions{display:flex;gap:13px;flex-wrap:wrap;margin-top:32px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:52px;padding:0 21px;border-radius:13px;font-size:.94rem;font-weight:800;transition:.2s}
 .btn:hover{transform:translateY(-2px)}
-.btn-primary{background:linear-gradient(120deg,#a67c36,#d2aa61 56%,#e6c983);box-shadow:0 14px 30px rgba(172,126,48,.25)}
+.btn-primary{background:linear-gradient(120deg,#856124,#b69250 56%,#b9964a);box-shadow:0 14px 30px rgba(172,126,48,.25)}
 .btn-secondary{border:1px solid rgba(255,255,255,.48);background:rgba(15,20,23,.36);backdrop-filter:blur(10px)}
 
 .values-strip{position:absolute;z-index:3;left:0;right:0;bottom:0;padding:68px 0 26px;background:linear-gradient(180deg,rgba(11,15,17,0),rgba(11,15,17,.72) 35%,rgba(11,15,17,.98) 100%)}
