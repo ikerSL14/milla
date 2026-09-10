@@ -229,8 +229,17 @@ img{display:block;max-width:100%}
 }
 @media(max-width:600px){
   :root{--header:72px}.container{width:min(100% - 24px,1180px)}.brand img{width:142px}.hero{min-height:820px}
-  .hero-overlay{background:linear-gradient(90deg,rgba(9, 14, 17, 0.904),rgba(9,14,17,.75) 45%,rgba(9,14,17,.94))}
-  .hero-media{opacity:0.3;}
+  .hero-overlay{background:linear-gradient(
+    180deg,
+    rgba(7,11,15,0) 0%,
+    rgba(7,11,15,.12) 10%,
+    rgba(7, 11, 15, 0.384) 28%,
+    rgba(7, 11, 15, 0.342) 40%,
+    rgba(7, 11, 15, 0.281) 52%,
+    rgba(7,11,15,.12) 68%,
+    rgba(7,11,15,0) 80%
+  );}
+  .hero-media{opacity:0.3; background-position: 90% 100%}
   .hero-copy{text-align: center;}
   .hero-content{align-items:flex-start; justify-content: center; min-height:700px;padding:105px 0 235px}.hero-copy{width:100%}.hero h1{font-size:clamp(2.4rem,12vw,3.2rem)}.hero p{font-size:.97rem;line-height:1.7}
   .hero-actions{flex-direction:column}.btn{width:100%}.values-strip{padding:54px 0 16px}.values-grid{grid-template-columns:repeat(2,1fr)}
@@ -2518,90 +2527,87 @@ iconify-icon {
 
 
 /* ==========================================================
-   HOVER / ACTIVE
+   DESKTOP — HOVER
+   Solo dispositivos que realmente tienen hover
 ========================================================== */
 
-.service-card:hover .service-image img,
-.service-card.is-active .service-image img {
+@media (hover: hover) and (pointer: fine) {
 
-  transform:
-    scale(1.08);
+  .service-card:hover .service-image img {
 
-  filter:
-    brightness(.68);
-}
+    transform:
+      scale(1.08);
 
-
-.service-card:hover .service-image::after,
-.service-card.is-active .service-image::after {
-
-  opacity:
-    .3;
-}
+    filter:
+      brightness(.68);
+  }
 
 
-.service-card:hover .service-overlay,
-.service-card.is-active .service-overlay {
+  .service-card:hover .service-image::after {
 
-  background:
-    linear-gradient(
-      to top,
-      rgba(10,12,13,.98) 0%,
-      rgba(10,12,13,.96) 48%,
-      rgba(10,12,13,.78) 100%
-    );
-}
+    opacity:
+      .3;
+  }
 
 
-.service-card:hover .service-line,
-.service-card.is-active .service-line {
+  .service-card:hover .service-overlay {
 
-  width:
-    52px;
-}
-
-
-.service-card:hover .service-top iconify-icon,
-.service-card.is-active .service-top iconify-icon {
-
-  transform:
-    translateY(-3px);
-}
+    background:
+      linear-gradient(
+        to top,
+        rgba(10,12,13,.98) 0%,
+        rgba(10,12,13,.96) 48%,
+        rgba(10,12,13,.78) 100%
+      );
+  }
 
 
-.service-card:hover .service-list,
-.service-card.is-active .service-list {
+  .service-card:hover .service-line {
 
-  max-height:
-    240px;
-
-  margin-top:
-    17px;
-
-  opacity:
-    1;
-
-  transform:
-    translateY(0);
-}
+    width:
+      52px;
+  }
 
 
-.service-card:hover .service-expand,
-.service-card.is-active .service-expand {
+  .service-card:hover .service-top iconify-icon {
 
-  border-color:
-    #b88a43;
-
-  background:
-    #b88a43;
-}
+    transform:
+      translateY(-3px);
+  }
 
 
-.service-card:hover .service-expand iconify-icon,
-.service-card.is-active .service-expand iconify-icon {
+  .service-card:hover .service-list {
 
-  transform:
-    rotate(45deg);
+    max-height:
+      240px;
+
+    margin-top:
+      17px;
+
+    opacity:
+      1;
+
+    transform:
+      translateY(0);
+  }
+
+
+  .service-card:hover .service-expand {
+
+    border-color:
+      #b88a43;
+
+    background:
+      #b88a43;
+  }
+
+
+  .service-card:hover .service-expand iconify-icon {
+
+    transform:
+      rotate(45deg);
+  }
+
 }
 
 
@@ -2835,12 +2841,29 @@ iconify-icon {
 
   .service-card {
 
-    height:
-      420px;
+  height:
+    420px;
 
-    min-height:
-      420px;
-  }
+  min-height:
+    420px;
+
+  transition:
+    height .55s cubic-bezier(.22,.7,.16,1);
+}
+.service-card:not(.is-active) .service-list {
+
+  max-height:
+    0;
+
+  margin-top:
+    0;
+
+  opacity:
+    0;
+
+  transform:
+    translateY(12px);
+}
 
 
   .service-overlay {
@@ -2867,88 +2890,91 @@ iconify-icon {
   }
 
 
-  /*
-     En móvil NO usamos hover.
-     La expansión ocurre con .is-active.
-  */
+  /* ==========================================================
+   MOBILE — TARJETA ABIERTA
+========================================================== */
 
-  .service-card:not(.is-active)
-  .service-list {
+.service-card.is-active {
 
-    max-height:
-      0;
-
-    margin-top:
-      0;
-
-    opacity:
-      0;
-  }
+  height:
+    540px;
+}
 
 
-  .service-card.is-active {
+.service-card.is-active .service-list {
 
-    height:
-      540px;
+  max-height:
+    260px;
 
-    transition:
-      height .55s cubic-bezier(.22,.7,.16,1);
-  }
+  margin-top:
+    17px;
 
+  opacity:
+    1;
 
-  .service-card.is-active
-  .service-list {
-
-    max-height:
-      260px;
-
-    margin-top:
-      17px;
-
-    opacity:
-      1;
-
-    transform:
-      translateY(0);
-  }
+  transform:
+    translateY(0);
+}
 
 
-  .service-card.is-active
-  .service-image img {
+.service-card.is-active .service-image img {
 
-    transform:
-      scale(1.08);
+  transform:
+    scale(1.08);
 
-    filter:
-      brightness(.62);
-  }
-
-
-  .services-bottom {
-
-    justify-content:
-      space-between;
-
-    margin-top:
-      20px;
-  }
+  filter:
+    brightness(.62);
+}
 
 
-  .services-bottom span {
+.service-card.is-active .service-image::after {
 
-    font-size:
-      .48rem;
-
-    letter-spacing:
-      .12em;
-  }
+  opacity:
+    .3;
+}
 
 
-  .services-bottom-line {
+.service-card.is-active .service-overlay {
 
-    display:
-      none;
-  }
+  background:
+    linear-gradient(
+      to top,
+      rgba(10,12,13,.98) 0%,
+      rgba(10,12,13,.96) 48%,
+      rgba(10,12,13,.78) 100%
+    );
+}
+
+
+.service-card.is-active .service-line {
+
+  width:
+    52px;
+}
+
+
+.service-card.is-active .service-top iconify-icon {
+
+  transform:
+    translateY(-3px);
+}
+
+
+.service-card.is-active .service-expand {
+
+  border-color:
+    #b88a43;
+
+  background:
+    #b88a43;
+}
+
+
+.service-card.is-active .service-expand iconify-icon {
+
+  transform:
+    rotate(45deg);
+}
 
 }
 
@@ -10272,4 +10298,1970 @@ iconify-icon {
     transition: none;
   }
 
+}
+
+/* ==========================================================
+   MILLA — OPORTUNIDADES
+========================================================== */
+
+.milla-careers {
+
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  background:
+    #ffffff;
+
+  padding:
+    105px 0 70px;
+
+  color:
+    #202629;
+}
+
+
+.milla-careers-grid {
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  opacity:
+    .35;
+
+  background-image:
+    linear-gradient(
+      rgba(32,38,41,.035) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(32,38,41,.035) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    70px 70px;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      transparent,
+      black 18%,
+      black 82%,
+      transparent
+    );
+}
+
+
+.milla-careers-container {
+
+  position:
+    relative;
+
+  z-index:
+    2;
+}
+
+
+
+/* ==========================================================
+   HEADER
+========================================================== */
+
+.milla-careers-header {
+
+  max-width:
+    1120px;
+
+  margin:
+    0 auto 65px;
+
+}
+
+
+.milla-careers-kicker {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    12px;
+
+  margin-bottom:
+    20px;
+
+  color:
+    #a07838;
+
+  font-size:
+    .68rem;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .19em;
+
+  text-transform:
+    uppercase;
+}
+
+
+.milla-careers-kicker span {
+
+  width:
+    30px;
+
+  height:
+    1px;
+
+  background:
+    #b98b45;
+}
+
+
+.milla-careers-heading {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    minmax(0, 1.35fr)
+    minmax(280px, .65fr);
+
+  gap:
+    80px;
+
+  align-items:
+    end;
+}
+
+
+.milla-careers-heading h2 {
+
+  margin:
+    0;
+
+  color:
+    #24292c;
+
+  font-size:
+    clamp(
+      3rem,
+      4vw,
+      5.2rem
+    );
+
+  line-height:
+    .94;
+
+  letter-spacing:
+    -.065em;
+
+  font-weight:
+    500;
+}
+
+
+.milla-careers-heading h2 strong {
+
+  display:
+    block;
+
+  color:
+    #a77c37;
+
+  font-weight:
+    700;
+}
+
+
+.milla-careers-heading p {
+
+  max-width:
+    390px;
+
+  margin:
+    0;
+
+  color:
+    #777d80;
+
+  font-size:
+    .88rem;
+
+  line-height:
+    1.8;
+}
+
+
+
+/* ==========================================================
+   LAYOUT
+========================================================== */
+
+.milla-careers-layout {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    170px;
+
+  gap:
+    80px;
+
+  max-width:
+    1120px;
+
+  margin:
+    0 auto;
+}
+
+
+
+/* ==========================================================
+   LABEL
+========================================================== */
+
+.milla-careers-section-label {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  padding-bottom:
+    14px;
+
+  border-bottom:
+    1px solid
+    #e2e4e4;
+
+  color:
+    #303638;
+
+  font-size:
+    .61rem;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .16em;
+}
+
+
+.milla-careers-status {
+
+  color:
+    #a07838;
+
+  font-size:
+    .55rem;
+}
+
+
+
+/* ==========================================================
+   JOB CARD
+========================================================== */
+
+.milla-job-card {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    60px
+    1fr
+    50px;
+
+  align-items:
+    center;
+
+  gap:
+    22px;
+
+  min-height:
+    150px;
+
+  padding:
+    24px 0;
+
+  border-bottom:
+    1px solid
+    #e5e7e7;
+
+  transition:
+    padding .35s ease;
+}
+
+
+.milla-job-card:hover {
+
+  padding-left:
+    12px;
+
+}
+
+
+.milla-job-index {
+
+  color:
+    #a98245;
+
+  font-size:
+    .62rem;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .1em;
+}
+
+
+.milla-job-type {
+
+  color:
+    #a07838;
+
+  font-size:
+    .55rem;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .15em;
+
+  text-transform:
+    uppercase;
+}
+
+
+.milla-job-main h3 {
+
+  margin:
+    7px 0 7px;
+
+  color:
+    #252a2c;
+
+  font-size:
+    1.25rem;
+
+  font-weight:
+    600;
+
+  letter-spacing:
+    -.025em;
+}
+
+
+.milla-job-main p {
+
+  max-width:
+    590px;
+
+  margin:
+    0;
+
+  color:
+    #7d8284;
+
+  font-size:
+    .76rem;
+
+  line-height:
+    1.65;
+}
+
+
+.milla-job-arrow {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  width:
+    42px;
+
+  height:
+    42px;
+
+  background: white;
+  cursor: pointer;
+  border:
+    1px solid
+    #dedfdf;
+
+  border-radius:
+    50%;
+
+  color:
+    #a07838;
+
+  transition:
+    background .35s ease,
+    color .35s ease,
+    border-color .35s ease,
+    transform .35s ease;
+}
+
+
+.milla-job-card:hover .milla-job-arrow {
+
+  background:
+    #a07838;
+
+  border-color:
+    #a07838;
+
+  color:
+    #fff;
+
+  transform:
+    translate(3px,-3px);
+}
+
+
+
+/* ==========================================================
+   OPEN APPLICATION
+========================================================== */
+
+.milla-open-application {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    52px
+    1fr
+    auto;
+
+  align-items:
+    center;
+
+  gap:
+    20px;
+
+  margin-top:
+    26px;
+
+  padding:
+    24px 26px;
+
+  border:
+    1px solid
+    #dedfdf;
+
+  background:
+    #fafafa;
+
+  transition:
+    border-color .35s ease,
+    box-shadow .35s ease,
+    transform .35s ease;
+}
+
+
+.milla-open-application:hover {
+
+  border-color:
+    #c5a36e;
+
+  box-shadow:
+    0 18px 45px
+    rgba(25,30,32,.07);
+
+  transform:
+    translateY(-2px);
+}
+
+#millaCareerForm #career-area.is-career-locked {
+  pointer-events: none;
+  cursor: default;
+}
+
+.milla-open-icon {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  width:
+    50px;
+
+  height:
+    50px;
+
+  border:
+    1px solid
+    #ded5c6;
+
+  color:
+    #a07838;
+
+  font-size:
+    1.35rem;
+}
+
+
+.milla-open-copy > span {
+
+  color:
+    #a07838;
+
+  font-size:
+    .55rem;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .15em;
+}
+
+
+.milla-open-copy h3 {
+
+  margin:
+    5px 0 4px;
+
+  color:
+    #252a2c;
+
+  font-size:
+    1rem;
+
+  font-weight:
+    600;
+}
+
+
+.milla-open-copy p {
+
+  margin:
+    0;
+
+  color:
+    #7b8082;
+
+  font-size:
+    .7rem;
+
+  line-height:
+    1.55;
+}
+
+
+
+/* ==========================================================
+   BOTÓN
+========================================================== */
+
+.milla-career-button {
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  gap:
+    13px;
+
+  min-height:
+    44px;
+
+  padding:
+    0 18px;
+
+  border:
+    1px solid
+    #252a2c;
+
+  background:
+    #252a2c;
+
+  color:
+    #fff;
+
+  font-family:
+    inherit;
+
+  font-size:
+    .62rem;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .1em;
+
+  text-transform:
+    uppercase;
+
+  cursor:
+    pointer;
+
+  transition:
+    background .3s ease,
+    border-color .3s ease,
+    transform .3s ease;
+}
+
+
+.milla-career-button:hover {
+
+  background:
+    #a07838;
+
+  border-color:
+    #a07838;
+
+  transform:
+    translateY(-2px);
+}
+
+
+.milla-career-button iconify-icon {
+
+  font-size:
+    1rem;
+}
+
+
+
+/* ==========================================================
+   ASIDE
+========================================================== */
+
+.milla-careers-aside {
+
+  position:
+    relative;
+
+  min-height:
+    430px;
+
+  padding-left:
+    30px;
+
+  border-left:
+    1px solid
+    #e0e2e2;
+}
+
+
+.milla-careers-aside-number {
+
+  color:
+    #a07838;
+
+  font-size:
+    .65rem;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .15em;
+}
+
+
+.milla-careers-aside-line {
+
+  width:
+    32px;
+
+  height:
+    1px;
+
+  margin:
+    22px 0;
+
+  background:
+    #b98b45;
+}
+
+
+.milla-careers-aside p {
+
+  margin:
+    0;
+
+  color:
+    #444a4c;
+
+  font-size:
+    .8rem;
+
+  line-height:
+    1.9;
+
+  letter-spacing:
+    .05em;
+
+  text-transform:
+    uppercase;
+}
+
+
+.milla-careers-aside-bottom {
+
+  position:
+    absolute;
+
+  bottom:
+    0;
+
+  left:
+    30px;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    6px;
+}
+
+
+.milla-careers-aside-bottom span {
+
+  color:
+    #a1a5a6;
+
+  font-size:
+    .52rem;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .17em;
+}
+
+
+.milla-careers-aside-bottom span:first-child {
+
+  color:
+    #a07838;
+}
+
+
+
+/* ==========================================================
+   FOOTER
+========================================================== */
+
+.milla-careers-footer {
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  max-width:
+    1120px;
+
+  margin:
+    55px auto 0;
+
+  padding-top:
+    18px;
+
+  border-top:
+    1px solid
+    #e4e5e5;
+
+  color:
+    #a1a4a5;
+
+  font-size:
+    .52rem;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .15em;
+}
+
+
+
+/* ==========================================================
+   MODAL
+========================================================== */
+
+.milla-career-modal {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    9999;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    25px;
+
+  visibility:
+    hidden;
+
+  opacity:
+    0;
+
+  pointer-events:
+    none;
+
+  transition:
+    opacity .35s ease,
+    visibility .35s ease;
+}
+
+
+.milla-career-modal.is-open {
+
+  visibility:
+    visible;
+
+  opacity:
+    1;
+
+  pointer-events:
+    auto;
+}
+
+
+.milla-career-modal-backdrop {
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  background:
+    rgba(13,16,17,.76);
+
+  backdrop-filter:
+    blur(8px);
+}
+
+
+.milla-career-modal-dialog {
+
+  position:
+    relative;
+
+  z-index:
+    2;
+
+  width:
+    min(680px, 100%);
+
+  max-height:
+    92vh;
+
+  overflow:
+    auto;
+
+  padding:
+    42px;
+
+  background:
+    #fff;
+
+  box-shadow:
+    0 35px 100px
+    rgba(0,0,0,.25);
+
+  transform:
+    translateY(20px)
+    scale(.98);
+
+  transition:
+    transform .4s cubic-bezier(.2,.7,.2,1);
+}
+
+
+.milla-career-modal.is-open
+.milla-career-modal-dialog {
+
+  transform:
+    translateY(0)
+    scale(1);
+}
+
+
+.milla-career-modal-close {
+
+  position:
+    absolute;
+
+  top:
+    18px;
+
+  right:
+    18px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  width:
+    38px;
+
+  height:
+    38px;
+
+  border:
+    1px solid
+    #dedfdf;
+
+  border-radius:
+    50%;
+
+  background:
+    #fff;
+
+  color:
+    #34393b;
+
+  font-size:
+    1.25rem;
+
+  cursor:
+    pointer;
+
+  transition:
+    background .25s ease,
+    color .25s ease;
+}
+
+
+.milla-career-modal-close:hover {
+
+  background:
+    #252a2c;
+
+  color:
+    #fff;
+}
+
+
+
+/* ==========================================================
+   MODAL HEADER
+========================================================== */
+
+.milla-career-modal-header {
+
+  max-width:
+    520px;
+
+  margin-bottom:
+    30px;
+}
+
+
+.milla-career-modal-kicker {
+
+  color:
+    #a07838;
+
+  font-size:
+    .58rem;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .18em;
+}
+
+
+.milla-career-modal-header h2 {
+
+  margin:
+    9px 0 10px;
+
+  color:
+    #252a2c;
+
+  font-size:
+    clamp(
+      2rem,
+      4vw,
+      3rem
+    );
+
+  line-height:
+    1;
+
+  letter-spacing:
+    -.05em;
+
+  font-weight:
+    500;
+}
+
+
+.milla-career-modal-header h2 strong {
+
+  color:
+    #a07838;
+
+  font-weight:
+    700;
+}
+
+
+.milla-career-modal-header p {
+
+  margin:
+    0;
+
+  color:
+    #7c8183;
+
+  font-size:
+    .78rem;
+
+  line-height:
+    1.7;
+}
+
+
+
+/* ==========================================================
+   FORM
+========================================================== */
+
+.milla-career-form {
+
+  position:
+    relative;
+
+  display:
+    grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:
+    18px;
+}
+
+
+.milla-career-field {
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    7px;
+}
+
+
+.milla-career-field-full {
+
+  grid-column:
+    1 / -1;
+}
+
+
+.milla-career-field label {
+
+  color:
+    #343a3c;
+
+  font-size:
+    .61rem;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .08em;
+
+  text-transform:
+    uppercase;
+}
+
+
+.milla-career-field label span {
+
+  color:
+    #a2a5a6;
+
+  font-size:
+    .52rem;
+
+  font-weight:
+    500;
+
+  text-transform:
+    none;
+}
+
+
+.milla-career-field input,
+.milla-career-field select,
+.milla-career-field textarea {
+
+  width:
+    100%;
+
+  box-sizing:
+    border-box;
+
+  padding:
+    12px 13px;
+
+  border:
+    1px solid
+    #dfe1e1;
+
+  outline:
+    none;
+
+  background:
+    #fafafa;
+
+  color:
+    #252a2c;
+
+  font-family:
+    inherit;
+
+  font-size:
+    .76rem;
+
+  transition:
+    border-color .25s ease,
+    background .25s ease,
+    box-shadow .25s ease;
+}
+
+
+.milla-career-field textarea {
+
+  resize:
+    vertical;
+
+  min-height:
+    105px;
+}
+
+
+.milla-career-field input:focus,
+.milla-career-field select:focus,
+.milla-career-field textarea:focus {
+
+  border-color:
+    #b88a43;
+
+  background:
+    #fff;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(184,138,67,.08);
+}
+
+
+
+/* ==========================================================
+   FILE
+========================================================== */
+
+.milla-career-file {
+
+  grid-column:
+    1 / -1;
+
+  position:
+    relative;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    13px;
+
+  min-height:
+    68px;
+
+  padding:
+    12px 15px;
+
+  border:
+    1px dashed
+    #cfd2d2;
+
+  background:
+    #fafafa;
+
+  cursor:
+    pointer;
+
+  transition:
+    border-color .25s ease,
+    background .25s ease;
+}
+
+
+.milla-career-file:hover {
+
+  border-color:
+    #b88a43;
+
+  background:
+    #fff;
+}
+
+
+.milla-career-file-icon {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  width:
+    38px;
+
+  height:
+    38px;
+
+  background:
+    #252a2c;
+
+  color:
+    #fff;
+
+  font-size:
+    1.05rem;
+}
+
+
+.milla-career-file-copy {
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    3px;
+
+  min-width:
+    0;
+}
+
+
+.milla-career-file-copy label {
+
+  color:
+    #303638;
+
+  font-size:
+    .65rem;
+
+  font-weight:
+    800;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    .08em;
+
+  cursor:
+    pointer;
+}
+
+
+.milla-career-file-copy span {
+
+  color:
+    #8a8e90;
+
+  font-size:
+    .58rem;
+}
+
+
+.milla-career-file input {
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  opacity:
+    0;
+
+  cursor:
+    pointer;
+}
+
+
+.milla-career-file-name {
+
+  margin-left:
+    auto;
+
+  color:
+    #a07838;
+
+  font-size:
+    .58rem;
+
+  font-weight:
+    800;
+
+  white-space:
+    nowrap;
+}
+
+
+
+/* ==========================================================
+   CONSENT
+========================================================== */
+
+.milla-career-consent {
+
+  grid-column:
+    1 / -1;
+
+  display:
+    flex;
+
+  align-items:
+    flex-start;
+
+  gap:
+    9px;
+
+  color:
+    #85898a;
+
+  font-size:
+    .59rem;
+
+  line-height:
+    1.5;
+
+  cursor:
+    pointer;
+}
+
+
+.milla-career-consent input {
+
+  margin-top:
+    2px;
+
+  accent-color:
+    #a07838;
+}
+
+
+
+/* ==========================================================
+   SUBMIT
+========================================================== */
+
+.milla-career-submit {
+
+  grid-column:
+    1 / -1;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  width:
+    100%;
+
+  min-height:
+    50px;
+
+  padding:
+    0 20px;
+
+  border:
+    none;
+
+  background:
+    #252a2c;
+
+  color:
+    #fff;
+
+  font-family:
+    inherit;
+
+  font-size:
+    .62rem;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .1em;
+
+  text-transform:
+    uppercase;
+
+  cursor:
+    pointer;
+
+  transition:
+    background .3s ease,
+    transform .3s ease;
+}
+
+
+.milla-career-submit:hover {
+
+  background:
+    #a07838;
+
+  transform:
+    translateY(-2px);
+}
+
+
+
+/* ==========================================================
+   SUCCESS
+========================================================== */
+
+.milla-career-success {
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    40px;
+
+  background:
+    #fff;
+
+  text-align:
+    center;
+
+  opacity:
+    0;
+
+  visibility:
+    hidden;
+
+  pointer-events:
+    none;
+
+  transition:
+    opacity .3s ease,
+    visibility .3s ease;
+}
+
+
+.milla-career-success.is-visible {
+
+  opacity:
+    1;
+
+  visibility:
+    visible;
+
+  pointer-events:
+    auto;
+}
+
+
+.milla-career-success-icon {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  width:
+    64px;
+
+  height:
+    64px;
+
+  margin-bottom:
+    20px;
+
+  border:
+    1px solid
+    #cbb58e;
+
+  border-radius:
+    50%;
+
+  color:
+    #a07838;
+
+  font-size:
+    2rem;
+}
+
+
+.milla-career-success h3 {
+
+  margin:
+    0 0 8px;
+
+  color:
+    #252a2c;
+
+  font-size:
+    1.5rem;
+}
+
+
+.milla-career-success p {
+
+  max-width:
+    400px;
+
+  margin:
+    0;
+
+  color:
+    #7b8082;
+
+  font-size:
+    .75rem;
+
+  line-height:
+    1.7;
+}
+
+
+
+/* ==========================================================
+   HONEYPOT
+========================================================== */
+
+.milla-career-honeypot {
+
+  position:
+    absolute;
+
+  left:
+    -9999px;
+
+  opacity:
+    0;
+
+  pointer-events:
+    none;
+}
+
+.milla-career-area-locked {
+    pointer-events: none;
+}
+
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media (max-width: 800px) {
+
+  .milla-careers {
+
+    padding:
+      80px 0 60px;
+  }
+
+
+  .milla-careers-heading {
+
+    display:
+      block;
+  }
+
+
+  .milla-careers-heading p {
+
+    margin-top:
+      25px;
+  }
+
+
+  .milla-careers-layout {
+
+    display:
+      block;
+  }
+
+
+  .milla-careers-aside {
+
+    display:
+      none;
+  }
+
+
+  .milla-job-card {
+
+    grid-template-columns:
+      35px 1fr 42px;
+
+    gap:
+      12px;
+  }
+
+
+  .milla-open-application {
+
+    grid-template-columns:
+      45px 1fr;
+
+    gap:
+      15px;
+  }
+
+
+  .milla-career-button {
+
+    grid-column:
+      2;
+
+    justify-self:
+      start;
+
+    margin-top:
+      7px;
+  }
+
+
+  .milla-careers-footer {
+
+    margin-top:
+      40px;
+
+    gap:
+      20px;
+
+    flex-direction:
+      column;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .milla-careers-header {
+
+    margin-bottom:
+      45px;
+  }
+
+
+  .milla-careers-heading h2 {
+
+    font-size:
+      clamp(
+        2.7rem,
+        13vw,
+        4rem
+      );
+  }
+
+
+  .milla-career-modal {
+
+    padding:
+      12px;
+  }
+
+
+  .milla-career-modal-dialog {
+
+    max-height:
+      95vh;
+
+    padding:
+      30px 20px 25px;
+  }
+
+
+  .milla-career-form {
+
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .milla-career-field-full,
+  .milla-career-file,
+  .milla-career-consent,
+  .milla-career-submit {
+
+    grid-column:
+      auto;
+  }
+
+
+  .milla-career-file {
+
+    min-height:
+      75px;
+  }
+
+
+  .milla-career-file-name {
+
+    display:
+      none;
+  }
+
+}
+
+/* ==========================================================
+   VACANTE SELECCIONADA
+========================================================== */
+
+.milla-career-job-selected {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    12px;
+
+  min-height:
+    48px;
+
+  padding:
+    8px 12px;
+
+  border:
+    1px solid
+    #d9dada;
+
+  background:
+    #f1f2f2;
+
+  color:
+    #555b5d;
+
+  cursor:
+    default;
+}
+
+
+.milla-career-job-selected-icon {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  width:
+    32px;
+
+  height:
+    32px;
+
+  flex:
+    0 0 auto;
+
+  background:
+    #e1e2e2;
+
+  color:
+    #8b6a38;
+
+  font-size:
+    .95rem;
+}
+
+
+.milla-career-job-selected-copy {
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    3px;
+
+  min-width:
+    0;
+}
+
+
+.milla-career-job-selected-copy span {
+
+  color:
+    #42484a;
+
+  font-size:
+    .7rem;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .01em;
+}
+
+
+.milla-career-job-selected-copy small {
+
+  color:
+    #989c9d;
+
+  font-size:
+    .56rem;
+}
+
+
+/* ==========================================================
+   SELECT BLOQUEADO
+========================================================== */
+
+.milla-career-field
+.is-career-locked {
+
+  background:
+    #f1f2f2;
+
+  border-color:
+    #d9dada;
+
+  color:
+    #777d7f;
+
+  cursor:
+    not-allowed;
+
+  opacity:
+    1;
+}
+
+
+/* ==========================================================
+   ESTADO POSTULACIÓN GENERAL
+========================================================== */
+
+.milla-career-field-job.is-general
+.milla-career-job-selected {
+
+  background:
+    #fafafa;
 }

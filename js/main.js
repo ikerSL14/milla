@@ -270,168 +270,169 @@ if (
 
 
 /* ==========================================================
-   SERVICIOS — MOBILE TAP
+   SERVICIOS — MOBILE
+   Click en la tarjeta para abrir / cerrar
 ========================================================== */
 
 const serviceCards =
-  document.querySelectorAll(
-    '.service-card'
-  );
+  document.querySelectorAll('.service-card');
 
 
 serviceCards.forEach(card => {
 
   const button =
-    card.querySelector(
-      '.service-expand'
-    );
+    card.querySelector('.service-expand');
 
 
-  if (!button)
-    return;
+  if (!button) return;
 
 
-  button.addEventListener(
-    'click',
-    event => {
+  /* ========================================================
+     FUNCIÓN PARA CERRAR UNA TARJETA
+  ======================================================== */
 
-      event.stopPropagation();
+  function closeServiceCard(targetCard) {
 
+    targetCard.classList.remove('is-active');
 
-      const isActive =
-        card.classList.contains(
-          'is-active'
-        );
+    const targetButton =
+      targetCard.querySelector('.service-expand');
 
+    if (targetButton) {
 
-      /*
-       * En móvil cerramos
-       * las demás tarjetas.
-       */
-
-      if (
-        window.innerWidth <= 760
-      ) {
-
-        serviceCards.forEach(
-          otherCard => {
-
-            if (
-              otherCard !== card
-            ) {
-
-              otherCard.classList.remove(
-                'is-active'
-              );
-
-
-              const otherButton =
-                otherCard.querySelector(
-                  '.service-expand'
-                );
-
-
-              if (otherButton) {
-
-                otherButton.setAttribute(
-                  'aria-expanded',
-                  'false'
-                );
-
-              }
-
-            }
-
-          }
-        );
-
-      }
-
-
-      card.classList.toggle(
-        'is-active',
-        !isActive
-      );
-
-
-      button.setAttribute(
+      targetButton.setAttribute(
         'aria-expanded',
-        String(!isActive)
+        'false'
       );
 
     }
-  );
+
+  }
 
 
+  /* ========================================================
+     FUNCIÓN PARA ABRIR UNA TARJETA
+  ======================================================== */
 
-  /*
-   * También permitimos tocar
-   * la tarjeta completa en móvil.
-   */
+  function openServiceCard(targetCard) {
 
-  card.addEventListener(
-    'click',
-    () => {
+    /*
+     * Cerramos todas las demás
+     */
 
-      if (
-        window.innerWidth > 760
-      ) {
-        return;
+    serviceCards.forEach(otherCard => {
+
+      if (otherCard !== targetCard) {
+
+        closeServiceCard(otherCard);
+
       }
 
-
-      const isActive =
-        card.classList.contains(
-          'is-active'
-        );
+    });
 
 
-      serviceCards.forEach(
-        otherCard => {
+    /*
+     * Abrimos la seleccionada
+     */
 
-          if (
-            otherCard !== card
-          ) {
+    targetCard.classList.add('is-active');
 
-            otherCard.classList.remove(
-              'is-active'
-            );
+    const targetButton =
+      targetCard.querySelector('.service-expand');
 
+    if (targetButton) {
 
-            const otherButton =
-              otherCard.querySelector(
-                '.service-expand'
-              );
-
-
-            if (otherButton) {
-
-              otherButton.setAttribute(
-                'aria-expanded',
-                'false'
-              );
-
-            }
-
-          }
-
-        }
-      );
-
-
-      card.classList.toggle(
-        'is-active',
-        !isActive
-      );
-
-
-      button.setAttribute(
+      targetButton.setAttribute(
         'aria-expanded',
-        String(!isActive)
+        'true'
       );
 
     }
-  );
+
+  }
+
+
+  /* ========================================================
+     CLICK EN TODA LA TARJETA
+  ======================================================== */
+
+  card.addEventListener('click', event => {
+
+    /*
+     * Desktop:
+     * no hacemos absolutamente nada.
+     * Desktop funciona exclusivamente con :hover.
+     */
+
+    if (window.innerWidth > 760) {
+      return;
+    }
+
+
+    /*
+     * Si el click fue directamente sobre el botón,
+     * dejamos que el listener del botón lo controle.
+     */
+
+    if (
+      event.target.closest('.service-expand')
+    ) {
+      return;
+    }
+
+
+    const isOpen =
+      card.classList.contains('is-active');
+
+
+    if (isOpen) {
+
+      closeServiceCard(card);
+
+    } else {
+
+      openServiceCard(card);
+
+    }
+
+  });
+
+
+  /* ========================================================
+     CLICK EN EL BOTÓN
+  ======================================================== */
+
+  button.addEventListener('click', event => {
+
+    event.preventDefault();
+    event.stopPropagation();
+
+
+    /*
+     * Desktop:
+     * el botón no controla el estado.
+     */
+
+    if (window.innerWidth > 760) {
+      return;
+    }
+
+
+    const isOpen =
+      card.classList.contains('is-active');
+
+
+    if (isOpen) {
+
+      closeServiceCard(card);
+
+    } else {
+
+      openServiceCard(card);
+
+    }
+
+  });
 
 });
 
@@ -1536,6 +1537,549 @@ if (millaContact) {
 
   millaContactObserver.observe(
     millaContact
+  );
+
+}
+
+/* ==========================================================
+   MILLA — MODAL DE VACANTES / CV
+========================================================== */
+
+const millaCareerModal =
+  document.getElementById('millaCareerModal');
+
+const millaCareerOpenButtons =
+  document.querySelectorAll('[data-career-open]');
+
+const millaCareerCloseButtons =
+  document.querySelectorAll('[data-career-close]');
+
+const millaCareerForm =
+  document.getElementById('millaCareerForm');
+
+const millaCareerFile =
+  document.getElementById('career-cv');
+
+const millaCareerFileName =
+  document.getElementById('millaCareerFileName');
+
+const millaCareerSuccess =
+  document.getElementById('millaCareerSuccess');
+
+  const millaCareerJobField =
+  document.getElementById(
+    'millaCareerJobField'
+  );
+
+const millaCareerJobDisplay =
+  document.getElementById(
+    'millaCareerJobDisplay'
+  );
+
+const millaCareerJobHint =
+  document.getElementById(
+    'millaCareerJobHint'
+  );
+
+const millaCareerJob =
+  document.getElementById(
+    'career-job'
+  );
+
+const millaCareerArea =
+  document.getElementById(
+    'career-area'
+  );
+
+const millaJobOpenButtons =
+  document.querySelectorAll(
+    '[data-job-open]'
+  );
+
+function resetMillaCareerForm() {
+
+  if (!millaCareerForm) return;
+
+  millaCareerForm.reset();
+
+  if (millaCareerArea) {
+
+  millaCareerArea.disabled = false;
+
+  millaCareerArea.classList.remove(
+    'is-career-locked'
+  );
+
+  millaCareerArea.removeAttribute(
+    'tabindex'
+  );
+
+}
+
+  if (millaCareerJob) {
+    millaCareerJob.value = 'Postulación general';
+  }
+
+  if (millaCareerJobDisplay) {
+    millaCareerJobDisplay.textContent =
+      'Postulación general';
+  }
+
+  if (millaCareerJobHint) {
+    millaCareerJobHint.textContent =
+      'No has seleccionado una vacante específica.';
+  }
+
+  if (millaCareerJobField) {
+    millaCareerJobField.classList.add(
+      'is-general'
+    );
+  }
+
+  if (millaCareerFileName) {
+    millaCareerFileName.textContent =
+      'Seleccionar';
+  }
+
+  if (millaCareerSuccess) {
+
+    millaCareerSuccess.classList.remove(
+      'is-visible'
+    );
+
+    millaCareerSuccess.setAttribute(
+      'aria-hidden',
+      'true'
+    );
+
+  }
+
+  millaCareerForm
+    .querySelectorAll(
+      'input, select, textarea, button'
+    )
+    .forEach(element => {
+
+      element.disabled = false;
+
+    });
+
+}
+/* ==========================================================
+   PREPARAR POSTULACIÓN
+========================================================== */
+
+function prepareMillaCareerApplication(
+  jobName = null,
+  areaName = null
+) {
+
+  if (
+    !millaCareerJob ||
+    !millaCareerJobDisplay ||
+    !millaCareerJobHint ||
+    !millaCareerJobField
+  ) {
+    return;
+  }
+
+  /*
+   * ================================================
+   * POSTULACIÓN A VACANTE
+   * ================================================
+   */
+
+  if (jobName) {
+
+    millaCareerJob.value =
+      jobName;
+
+    millaCareerJobDisplay.textContent =
+      jobName;
+
+    millaCareerJobHint.textContent =
+      'Postulación a una vacante publicada.';
+
+    millaCareerJobField.classList.remove(
+      'is-general'
+    );
+
+
+    if (
+      areaName &&
+      millaCareerArea
+    ) {
+
+      millaCareerArea.value =
+        areaName;
+
+      millaCareerArea.classList.add(
+        'is-career-locked'
+      );
+
+      /*
+       * Evita que pueda enfocarse con TAB
+       */
+      millaCareerArea.setAttribute(
+        'tabindex',
+        '-1'
+      );
+
+    }
+
+    return;
+  }
+
+
+  /*
+   * ================================================
+   * POSTULACIÓN GENERAL
+   * ================================================
+   */
+
+  millaCareerJob.value =
+    'Postulación general';
+
+  millaCareerJobDisplay.textContent =
+    'Postulación general';
+
+  millaCareerJobHint.textContent =
+    'No has seleccionado una vacante específica.';
+
+  millaCareerJobField.classList.add(
+    'is-general'
+  );
+
+
+  if (millaCareerArea) {
+
+    millaCareerArea.value = '';
+
+    millaCareerArea.classList.remove(
+      'is-career-locked'
+    );
+
+    /*
+     * Volvemos a permitir TAB
+     */
+    millaCareerArea.removeAttribute(
+      'tabindex'
+    );
+
+    millaCareerArea.disabled = false;
+
+  }
+
+}
+
+
+/* ==========================================================
+   ABRIR
+========================================================== */
+
+function openMillaCareerModal() {
+
+  if (!millaCareerModal) return;
+
+  millaCareerModal.classList.add('is-open');
+
+  millaCareerModal.setAttribute(
+    'aria-hidden',
+    'false'
+  );
+
+  document.body.classList.add(
+    'milla-career-modal-open'
+  );
+
+  setTimeout(() => {
+
+    const firstInput =
+      document.getElementById('career-name');
+
+    if (firstInput) {
+      firstInput.focus();
+    }
+
+  }, 300);
+
+}
+
+
+/* ==========================================================
+   CERRAR
+========================================================== */
+
+function closeMillaCareerModal() {
+
+  if (!millaCareerModal) return;
+
+  millaCareerModal.classList.remove(
+    'is-open'
+  );
+
+  millaCareerModal.setAttribute(
+    'aria-hidden',
+    'true'
+  );
+
+  document.body.classList.remove(
+    'milla-career-modal-open'
+  );
+
+}
+
+
+/* ==========================================================
+   ABRIR — POSTULACIÓN GENERAL
+========================================================== */
+
+millaCareerOpenButtons.forEach(button => {
+
+  button.addEventListener(
+    'click',
+    () => {
+
+      resetMillaCareerForm();
+      prepareMillaCareerApplication();
+      openMillaCareerModal();
+
+    }
+  );
+
+});
+
+
+millaCareerCloseButtons.forEach(button => {
+
+  button.addEventListener(
+    'click',
+    closeMillaCareerModal
+  );
+
+});
+
+/* ==========================================================
+   ABRIR — VACANTE ESPECÍFICA
+========================================================== */
+
+millaJobOpenButtons.forEach(button => {
+
+  button.addEventListener(
+    'click',
+    () => {
+
+      const jobName =
+        button.dataset.jobOpen;
+
+      /*
+       * Por ahora especificamos manualmente
+       * el área correspondiente.
+       */
+
+      const areaName =
+        button
+          .closest('.milla-job-card')
+          ?.dataset.jobArea || 'Ingeniería';
+
+
+      prepareMillaCareerApplication(
+        jobName,
+        areaName
+      );
+
+      openMillaCareerModal();
+
+    }
+  );
+
+});
+
+
+/* ==========================================================
+   ESC
+========================================================== */
+
+document.addEventListener(
+  'keydown',
+  event => {
+
+    if (
+      event.key === 'Escape' &&
+      millaCareerModal?.classList.contains(
+        'is-open'
+      )
+    ) {
+
+      closeMillaCareerModal();
+
+    }
+
+  }
+);
+
+
+/* ==========================================================
+   CV — NOMBRE DEL ARCHIVO
+========================================================== */
+
+if (millaCareerFile) {
+
+  millaCareerFile.addEventListener(
+    'change',
+    () => {
+
+      const file =
+        millaCareerFile.files[0];
+
+      if (!file) {
+
+        millaCareerFileName.textContent =
+          'Seleccionar';
+
+        return;
+
+      }
+
+
+      /*
+       * Límite visual de 5 MB.
+       */
+
+      const maxSize =
+        5 * 1024 * 1024;
+
+
+      if (file.size > maxSize) {
+
+        alert(
+          'El archivo supera los 5 MB. Selecciona un CV más ligero.'
+        );
+
+        millaCareerFile.value = '';
+
+        millaCareerFileName.textContent =
+          'Seleccionar';
+
+        return;
+
+      }
+
+
+      millaCareerFileName.textContent =
+        file.name;
+
+    }
+  );
+
+}
+
+
+/* ==========================================================
+   ENVÍO AJAX — NETLIFY FORMS
+========================================================== */
+
+if (millaCareerForm) {
+
+  millaCareerForm.addEventListener(
+    'submit',
+    async event => {
+
+      event.preventDefault();
+
+
+      const submitButton =
+        millaCareerForm.querySelector(
+          '.milla-career-submit'
+        );
+
+
+      if (!submitButton) return;
+
+
+      const originalText =
+        submitButton.innerHTML;
+
+
+      submitButton.disabled =
+        true;
+
+      submitButton.innerHTML = `
+        <span>Enviando solicitud...</span>
+        <iconify-icon
+          icon="solar:refresh-outline"
+        ></iconify-icon>
+      `;
+
+
+      try {
+
+        const formData =
+          new FormData(
+            millaCareerForm
+          );
+
+
+        const response =
+          await fetch(
+            '/',
+            {
+              method: 'POST',
+              body: formData
+            }
+          );
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            'Error al enviar el formulario'
+          );
+
+        }
+
+
+        millaCareerSuccess.classList.add(
+          'is-visible'
+        );
+
+        millaCareerSuccess.setAttribute(
+          'aria-hidden',
+          'false'
+        );
+
+
+        millaCareerForm
+          .querySelectorAll(
+            'input, select, textarea, button'
+          )
+          .forEach(element => {
+
+            element.disabled =
+              true;
+
+          });
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+        alert(
+          'No pudimos enviar tu solicitud. Inténtalo nuevamente.'
+        );
+
+
+        submitButton.disabled =
+          false;
+
+        submitButton.innerHTML =
+          originalText;
+
+      }
+
+    }
   );
 
 }
