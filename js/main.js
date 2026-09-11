@@ -2445,3 +2445,580 @@ if (millaCareerForm) {
   );
 
 }
+
+/* ==========================================================
+   MILLA — GALERÍA
+========================================================== */
+
+
+/* ==========================================================
+   REVEAL
+========================================================== */
+
+const millaGallery =
+  document.querySelector('.milla-gallery');
+
+
+if (millaGallery) {
+
+  const millaGalleryObserver =
+    new IntersectionObserver(
+      entries => {
+
+        entries.forEach(entry => {
+
+          if (!entry.isIntersecting)
+            return;
+
+
+          millaGallery.classList.add(
+            'is-visible'
+          );
+
+
+          millaGalleryObserver.unobserve(
+            entry.target
+          );
+
+        });
+
+      },
+      {
+        threshold: .12
+      }
+    );
+
+
+  millaGalleryObserver.observe(
+    millaGallery
+  );
+
+}
+
+
+
+/* ==========================================================
+   GALERÍA — DATOS
+========================================================== */
+
+const millaGalleryItems =
+  [
+    ...document.querySelectorAll(
+      '.milla-gallery-item'
+    )
+  ];
+
+
+const millaGalleryImages =
+  millaGalleryItems.map(item => {
+
+    const image =
+      item.querySelector('img');
+
+    return {
+
+      src:
+        image?.src || '',
+
+      alt:
+        image?.alt || ''
+
+    };
+
+  });
+
+
+
+/* ==========================================================
+   ELEMENTOS DEL MODAL
+========================================================== */
+
+const millaGalleryModal =
+  document.getElementById(
+    'millaGalleryModal'
+  );
+
+
+const millaGalleryModalImage =
+  document.getElementById(
+    'millaGalleryModalImage'
+  );
+
+
+const millaGalleryCounter =
+  document.getElementById(
+    'millaGalleryCounter'
+  );
+
+
+const millaGalleryCurrent =
+  document.getElementById(
+    'millaGalleryCurrent'
+  );
+
+
+const millaGalleryPrev =
+  document.getElementById(
+    'millaGalleryPrev'
+  );
+
+
+const millaGalleryNext =
+  document.getElementById(
+    'millaGalleryNext'
+  );
+
+
+const millaGalleryClose =
+  document.querySelectorAll(
+    '[data-gallery-close]'
+  );
+
+
+let millaGalleryIndex = 0;
+
+
+
+/* ==========================================================
+   NORMALIZAR ÍNDICE
+========================================================== */
+
+function normalizeGalleryIndex(index) {
+
+  const total =
+    millaGalleryImages.length;
+
+
+  if (!total) return 0;
+
+
+  if (index < 0) {
+
+    return total - 1;
+
+  }
+
+
+  if (index >= total) {
+
+    return 0;
+
+  }
+
+
+  return index;
+
+}
+
+
+
+/* ==========================================================
+   ACTUALIZAR IMAGEN
+========================================================== */
+
+function updateMillaGalleryImage(
+  index
+) {
+
+  if (
+    !millaGalleryModalImage ||
+    !millaGalleryImages.length
+  ) {
+    return;
+  }
+
+
+  millaGalleryIndex =
+    normalizeGalleryIndex(index);
+
+
+  const current =
+    millaGalleryImages[
+      millaGalleryIndex
+    ];
+
+
+  millaGalleryModalImage.src =
+    current.src;
+
+
+  millaGalleryModalImage.alt =
+    current.alt;
+
+
+  const number =
+    String(
+      millaGalleryIndex + 1
+    ).padStart(2, '0');
+
+
+  const total =
+    String(
+      millaGalleryImages.length
+    ).padStart(2, '0');
+
+
+  if (millaGalleryCounter) {
+
+    millaGalleryCounter.textContent =
+      `${number} / ${total}`;
+
+  }
+
+
+  if (millaGalleryCurrent) {
+
+    millaGalleryCurrent.textContent =
+      number;
+
+  }
+
+}
+
+
+
+/* ==========================================================
+   ABRIR
+========================================================== */
+
+function openMillaGallery(index) {
+
+  if (
+    !millaGalleryModal ||
+    !millaGalleryImages.length
+  ) {
+    return;
+  }
+
+
+  updateMillaGalleryImage(
+    index
+  );
+
+
+  millaGalleryModal.classList.add(
+    'is-open'
+  );
+
+
+  millaGalleryModal.setAttribute(
+    'aria-hidden',
+    'false'
+  );
+
+
+  document.body.classList.add(
+    'milla-gallery-modal-open'
+  );
+
+
+  /*
+   * Evita que el foco quede detrás
+   * del modal.
+   */
+
+  requestAnimationFrame(() => {
+
+    millaGalleryNext?.focus();
+
+  });
+
+}
+
+
+
+/* ==========================================================
+   CERRAR
+========================================================== */
+
+function closeMillaGallery() {
+
+  if (!millaGalleryModal)
+    return;
+
+
+  millaGalleryModal.classList.remove(
+    'is-open'
+  );
+
+
+  millaGalleryModal.setAttribute(
+    'aria-hidden',
+    'true'
+  );
+
+
+  document.body.classList.remove(
+    'milla-gallery-modal-open'
+  );
+
+}
+
+
+
+/* ==========================================================
+   CLICK EN MINIATURAS
+========================================================== */
+
+millaGalleryItems.forEach(item => {
+
+  item.addEventListener(
+    'click',
+    () => {
+
+      const index =
+        Number(
+          item.dataset.galleryIndex
+        );
+
+
+      openMillaGallery(index);
+
+    }
+  );
+
+});
+
+
+
+/* ==========================================================
+   SIGUIENTE
+========================================================== */
+
+millaGalleryNext?.addEventListener(
+  'click',
+  () => {
+
+    updateMillaGalleryImage(
+      millaGalleryIndex + 1
+    );
+
+  }
+);
+
+
+
+/* ==========================================================
+   ANTERIOR
+========================================================== */
+
+millaGalleryPrev?.addEventListener(
+  'click',
+  () => {
+
+    updateMillaGalleryImage(
+      millaGalleryIndex - 1
+    );
+
+  }
+);
+
+
+
+/* ==========================================================
+   CERRAR
+========================================================== */
+
+millaGalleryClose.forEach(button => {
+
+  button.addEventListener(
+    'click',
+    closeMillaGallery
+  );
+
+});
+
+
+
+/* ==========================================================
+   TECLADO
+========================================================== */
+
+document.addEventListener(
+  'keydown',
+  event => {
+
+    if (
+      !millaGalleryModal?.classList.contains(
+        'is-open'
+      )
+    ) {
+      return;
+    }
+
+
+    if (event.key === 'Escape') {
+
+      closeMillaGallery();
+
+      return;
+
+    }
+
+
+    if (event.key === 'ArrowRight') {
+
+      updateMillaGalleryImage(
+        millaGalleryIndex + 1
+      );
+
+      return;
+
+    }
+
+
+    if (event.key === 'ArrowLeft') {
+
+      updateMillaGalleryImage(
+        millaGalleryIndex - 1
+      );
+
+    }
+
+  }
+);
+
+
+
+/* ==========================================================
+   SWIPE EN MÓVIL
+========================================================== */
+
+let millaGalleryTouchStartX = 0;
+let millaGalleryTouchEndX = 0;
+
+
+if (millaGalleryModal) {
+
+  millaGalleryModal.addEventListener(
+    'touchstart',
+    event => {
+
+      millaGalleryTouchStartX =
+        event.changedTouches[0].screenX;
+
+    },
+    {
+      passive: true
+    }
+  );
+
+
+  millaGalleryModal.addEventListener(
+    'touchend',
+    event => {
+
+      millaGalleryTouchEndX =
+        event.changedTouches[0].screenX;
+
+
+      const distance =
+        millaGalleryTouchEndX -
+        millaGalleryTouchStartX;
+
+
+      if (Math.abs(distance) < 45) {
+        return;
+      }
+
+
+      if (distance < 0) {
+
+        updateMillaGalleryImage(
+          millaGalleryIndex + 1
+        );
+
+      } else {
+
+        updateMillaGalleryImage(
+          millaGalleryIndex - 1
+        );
+
+      }
+
+    },
+    {
+      passive: true
+    }
+  );
+
+}
+
+
+
+/* ==========================================================
+   PRELOAD — SIGUIENTE Y ANTERIOR
+========================================================== */
+
+function preloadMillaGalleryImage(
+  index
+) {
+
+  const normalized =
+    normalizeGalleryIndex(index);
+
+
+  const source =
+    millaGalleryImages[
+      normalized
+    ]?.src;
+
+
+  if (!source) return;
+
+
+  const image =
+    new Image();
+
+  image.src =
+    source;
+
+}
+
+
+
+/* ==========================================================
+   PRECARGA CUANDO CAMBIA
+========================================================== */
+
+const originalUpdateGalleryImage =
+  updateMillaGalleryImage;
+
+
+/*
+ * Envolvemos la función para cargar
+ * las imágenes vecinas.
+ */
+
+updateMillaGalleryImage =
+  function(index) {
+
+    originalUpdateGalleryImage(
+      index
+    );
+
+
+    preloadMillaGalleryImage(
+      millaGalleryIndex + 1
+    );
+
+
+    preloadMillaGalleryImage(
+      millaGalleryIndex - 1
+    );
+
+  };
+
+
+
+/* ==========================================================
+   RESET DE MODAL AL CARGAR
+========================================================== */
+
+if (millaGalleryModalImage) {
+
+  millaGalleryModalImage.removeAttribute(
+    'src'
+  );
+
+}

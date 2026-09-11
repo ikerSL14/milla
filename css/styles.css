@@ -6399,7 +6399,7 @@ iconify-icon {
     linear-gradient(
       180deg,
       #ffffff 0%,
-      #f6f5f1 100%
+      #ffffff 100%
     );
 }
 
@@ -12299,4 +12299,1275 @@ iconify-icon {
   color: rgba(0, 0, 0, 0.45);
   font-size: .95rem;
   line-height: 1.7;
+}
+
+/* ==========================================================
+   MILLA — GALERÍA
+========================================================== */
+
+.milla-gallery {
+
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  background:
+    #fff;
+
+  color:
+    #202629;
+
+  padding:
+    105px 0 75px;
+}
+
+
+.milla-gallery-bg {
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  opacity:
+    .35;
+
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(25,30,32,.035) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      rgba(25,30,32,.035) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    80px 80px;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      transparent,
+      black 15%,
+      black 85%,
+      transparent
+    );
+}
+
+
+.milla-gallery-container {
+
+  position:
+    relative;
+
+  z-index:
+    2;
+}
+
+
+
+/* ==========================================================
+   HEADER
+========================================================== */
+
+.milla-gallery-header {
+
+  max-width:
+    780px;
+
+  margin:
+    0 auto 55px;
+
+  text-align:
+    center;
+}
+
+
+.milla-gallery-kicker {
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  gap:
+    12px;
+
+  margin-bottom:
+    20px;
+
+  color:
+    #a07838;
+
+  font-size:
+    .63rem;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .2em;
+
+  text-transform:
+    uppercase;
+}
+
+
+.milla-gallery-kicker span {
+
+  width:
+    24px;
+
+  height:
+    1px;
+
+  background:
+    #b9914d;
+}
+
+
+.milla-gallery-header h2 {
+
+  margin:
+    0;
+
+  color:
+    #252a2c;
+
+  font-size:
+    clamp(
+      3rem,
+      4vw,
+      5rem
+    );
+
+  line-height:
+    .94;
+
+  letter-spacing:
+    -.06em;
+
+  font-weight:
+    400;
+}
+
+
+.milla-gallery-header h2 strong {
+
+  display:
+    block;
+
+  color:
+    #a77c37;
+
+  font-weight:
+    700;
+}
+
+
+.milla-gallery-header p {
+
+  max-width:
+    430px;
+
+  margin:
+    20px auto 0;
+
+  color:
+    #7c8284;
+
+  font-size:
+    .8rem;
+
+  line-height:
+    1.7;
+}
+
+
+
+/* ==========================================================
+   MOSAICO
+========================================================== */
+
+.milla-gallery-grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(5, 1fr);
+
+  grid-auto-rows:
+    155px;
+
+  gap:
+    10px;
+
+  max-width:
+    1180px;
+
+  margin:
+    0 auto;
+}
+
+
+.milla-gallery-item {
+
+  position:
+    relative;
+
+  display:
+    block;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  min-width:
+    0;
+
+  padding:
+    0;
+
+  overflow:
+    hidden;
+
+  border:
+    none;
+
+  background:
+    #e9e9e7;
+
+  cursor:
+    pointer;
+
+  isolation:
+    isolate;
+
+}
+
+
+/* ==========================================================
+   VARIACIÓN DEL MOSAICO
+========================================================== */
+
+.milla-gallery-item:nth-child(3) {
+
+  grid-row:
+    span 2;
+}
+
+
+.milla-gallery-item:nth-child(7) {
+
+  grid-row:
+    span 2;
+}
+
+
+.milla-gallery-item:nth-child(11) {
+
+  grid-column:
+    span 2;
+}
+
+
+.milla-gallery-item:nth-child(15) {
+
+  grid-row:
+    span 2;
+}
+
+
+.milla-gallery-item:nth-child(18) {
+
+  grid-column:
+    span 2;
+}
+
+
+
+
+/* ==========================================================
+   IMAGEN
+========================================================== */
+
+.milla-gallery-item img {
+
+  display:
+    block;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  object-fit:
+    cover;
+
+  object-position:
+    center;
+
+  transform:
+    scale(1.01);
+
+  transition:
+    transform .75s cubic-bezier(.2,.65,.2,1),
+    filter .5s ease;
+}
+
+
+.milla-gallery-item::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  z-index:
+    2;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(10,12,13,.4),
+      transparent 45%
+    );
+
+  opacity:
+    0;
+
+  transition:
+    opacity .4s ease;
+}
+
+
+.milla-gallery-item:hover img {
+
+  transform:
+    scale(1.08);
+
+  filter:
+    brightness(.78);
+}
+
+
+.milla-gallery-item:hover::after {
+
+  opacity:
+    1;
+}
+
+
+
+/* ==========================================================
+   INDICADOR DE APERTURA
+========================================================== */
+
+.milla-gallery-item::before {
+
+  content:
+    "↗";
+
+  position:
+    absolute;
+
+  z-index:
+    3;
+
+  right:
+    12px;
+
+  bottom:
+    11px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  width:
+    26px;
+
+  height:
+    26px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.45);
+
+  border-radius:
+    50%;
+
+  color:
+    #fff;
+
+  font-size:
+    .72rem;
+
+  opacity:
+    0;
+
+  transform:
+    translateY(5px);
+
+  transition:
+    opacity .35s ease,
+    transform .35s ease;
+}
+
+
+.milla-gallery-item:hover::before {
+
+  opacity:
+    1;
+
+  transform:
+    translateY(0);
+}
+
+
+
+/* ==========================================================
+   FOOTER
+========================================================== */
+
+.milla-gallery-footer {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    14px;
+
+  margin-top:
+    32px;
+}
+
+
+.milla-gallery-footer span {
+
+  width:
+    35px;
+
+  height:
+    1px;
+
+  background:
+    #dadcdc;
+}
+
+
+.milla-gallery-footer small {
+
+  color:
+    #a0a4a5;
+
+  font-size:
+    .5rem;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .18em;
+}
+
+
+
+/* ==========================================================
+   REVEAL
+========================================================== */
+
+.milla-gallery-header,
+.milla-gallery-item,
+.milla-gallery-footer {
+
+  opacity:
+    0;
+
+  transform:
+    translateY(20px);
+
+  transition:
+    opacity .7s ease,
+    transform .7s cubic-bezier(.22,.7,.16,1);
+}
+
+
+.milla-gallery.is-visible
+.milla-gallery-header {
+
+  opacity:
+    1;
+
+  transform:
+    translateY(0);
+}
+
+
+.milla-gallery.is-visible
+.milla-gallery-item {
+
+  opacity:
+    1;
+
+  transform:
+    translateY(0);
+}
+
+
+.milla-gallery.is-visible
+.milla-gallery-item:nth-child(1) {
+  transition-delay: .03s;
+}
+
+.milla-gallery.is-visible
+.milla-gallery-item:nth-child(2) {
+  transition-delay: .06s;
+}
+
+.milla-gallery.is-visible
+.milla-gallery-item:nth-child(3) {
+  transition-delay: .09s;
+}
+
+.milla-gallery.is-visible
+.milla-gallery-item:nth-child(4) {
+  transition-delay: .12s;
+}
+
+.milla-gallery.is-visible
+.milla-gallery-item:nth-child(5) {
+  transition-delay: .15s;
+}
+
+.milla-gallery.is-visible
+.milla-gallery-item:nth-child(6) {
+  transition-delay: .18s;
+}
+
+.milla-gallery.is-visible
+.milla-gallery-item:nth-child(7) {
+  transition-delay: .21s;
+}
+
+.milla-gallery.is-visible
+.milla-gallery-item:nth-child(8) {
+  transition-delay: .24s;
+}
+
+.milla-gallery.is-visible
+.milla-gallery-item:nth-child(9) {
+  transition-delay: .27s;
+}
+
+.milla-gallery.is-visible
+.milla-gallery-item:nth-child(10) {
+  transition-delay: .30s;
+}
+
+.milla-gallery.is-visible
+.milla-gallery-footer {
+
+  opacity:
+    1;
+
+  transform:
+    translateY(0);
+
+  transition-delay:
+    .36s;
+}
+
+
+
+/* ==========================================================
+   MODAL
+========================================================== */
+
+.milla-gallery-modal {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    10000;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    30px;
+
+  visibility:
+    hidden;
+
+  opacity:
+    0;
+
+  pointer-events:
+    none;
+
+  transition:
+    opacity .35s ease,
+    visibility .35s ease;
+}
+
+
+.milla-gallery-modal.is-open {
+
+  visibility:
+    visible;
+
+  opacity:
+    1;
+
+  pointer-events:
+    auto;
+}
+
+
+.milla-gallery-modal-backdrop {
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  background:
+    rgba(7,9,10,.93);
+
+  backdrop-filter:
+    blur(8px);
+}
+
+
+.milla-gallery-modal-dialog {
+
+  position:
+    relative;
+
+  z-index:
+    2;
+
+  width:
+    min(1200px, 94vw);
+
+  height:
+    min(88vh, 850px);
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+}
+
+
+/* ==========================================================
+   IMAGE
+========================================================== */
+
+.milla-gallery-modal-media {
+
+  width:
+    100%;
+
+  height:
+    calc(100% - 50px);
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    30px 90px;
+}
+
+
+.milla-gallery-modal-media img {
+
+  display:
+    block;
+
+  max-width:
+    100%;
+
+  max-height:
+    100%;
+
+  width:
+    auto;
+
+  height:
+    auto;
+
+  object-fit:
+    contain;
+
+  box-shadow:
+    0 30px 80px
+    rgba(0,0,0,.4);
+
+  user-select:
+    none;
+
+  -webkit-user-drag:
+    none;
+}
+
+
+
+/* ==========================================================
+   CLOSE
+========================================================== */
+
+.milla-gallery-modal-close {
+
+  position:
+    absolute;
+
+  top:
+    0;
+
+  right:
+    0;
+
+  z-index:
+    5;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  width:
+    44px;
+
+  height:
+    44px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.22);
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(255,255,255,.04);
+
+  color:
+    #fff;
+
+  font-size:
+    1.3rem;
+
+  cursor:
+    pointer;
+
+  transition:
+    background .25s ease,
+    border-color .25s ease;
+}
+
+
+.milla-gallery-modal-close:hover {
+
+  background:
+    #a07838;
+
+  border-color:
+    #a07838;
+}
+
+
+
+/* ==========================================================
+   NAVIGATION
+========================================================== */
+
+.milla-gallery-modal-nav {
+
+  position:
+    absolute;
+
+  top:
+    50%;
+
+  z-index:
+    5;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  width:
+    54px;
+
+  height:
+    54px;
+
+  margin-top:
+    -27px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.25);
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(255,255,255,.04);
+
+  color:
+    #fff;
+
+  font-size:
+    1.35rem;
+
+  cursor:
+    pointer;
+
+  backdrop-filter:
+    blur(5px);
+
+  transition:
+    background .3s ease,
+    border-color .3s ease,
+    transform .3s ease;
+}
+
+
+.milla-gallery-modal-prev {
+
+  left:
+    12px;
+}
+
+
+.milla-gallery-modal-next {
+
+  right:
+    12px;
+}
+
+
+.milla-gallery-modal-nav:hover {
+
+  background:
+    #a07838;
+
+  border-color:
+    #a07838;
+}
+
+
+.milla-gallery-modal-prev:hover {
+
+  transform:
+    translateX(-3px);
+}
+
+
+.milla-gallery-modal-next:hover {
+
+  transform:
+    translateX(3px);
+}
+
+
+
+/* ==========================================================
+   COUNTER
+========================================================== */
+
+.milla-gallery-modal-counter {
+
+  position:
+    absolute;
+
+  top:
+    5px;
+
+  left:
+    0;
+
+  color:
+    rgba(255,255,255,.58);
+
+  font-size:
+    .58rem;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .15em;
+}
+
+
+
+/* ==========================================================
+   MODAL FOOTER
+========================================================== */
+
+.milla-gallery-modal-bottom {
+
+  position:
+    absolute;
+
+  bottom:
+    0;
+
+  left:
+    0;
+
+  right:
+    0;
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  padding:
+    13px 0;
+
+  border-top:
+    1px solid
+    rgba(255,255,255,.12);
+
+  color:
+    rgba(255,255,255,.4);
+
+  font-size:
+    .5rem;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .16em;
+}
+
+
+
+/* ==========================================================
+   TABLET
+========================================================== */
+
+@media (max-width: 900px) {
+
+  .milla-gallery-grid {
+
+    grid-template-columns:
+      repeat(4, 1fr);
+
+    grid-auto-rows:
+      145px;
+  }
+
+
+  .milla-gallery-item:nth-child(11),
+  .milla-gallery-item:nth-child(18) {
+
+    grid-column:
+      span 1;
+  }
+
+
+  .milla-gallery-modal-media {
+
+    padding:
+      30px 65px;
+  }
+
+}
+
+
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media (max-width: 650px) {
+
+  .milla-gallery {
+
+    padding:
+      75px 0 55px;
+  }
+
+
+  .milla-gallery-header {
+
+    margin-bottom:
+      35px;
+  }
+
+
+  .milla-gallery-header h2 {
+
+    font-size:
+      clamp(
+        2.6rem,
+        12vw,
+        3.7rem
+      );
+  }
+
+
+  .milla-gallery-header p {
+
+    max-width:
+      320px;
+
+    font-size:
+      .72rem;
+  }
+
+
+  /* ================================================
+     MOSAICO MOBILE
+  ================================================= */
+
+  .milla-gallery-grid {
+
+    grid-template-columns:
+      repeat(2, 1fr);
+
+    grid-auto-rows:
+      125px;
+
+    gap:
+      7px;
+  }
+
+
+  .milla-gallery-item:nth-child(3),
+  .milla-gallery-item:nth-child(7),
+  .milla-gallery-item:nth-child(15),
+  .milla-gallery-item:nth-child(20) {
+
+    grid-row:
+      span 1;
+  }
+
+
+  .milla-gallery-item:nth-child(11),
+  .milla-gallery-item:nth-child(18) {
+
+    grid-column:
+      span 1;
+  }
+
+
+  /* ================================================
+     Indicador móvil
+  ================================================= */
+
+  .milla-gallery-item::before {
+
+    width:
+      23px;
+
+    height:
+      23px;
+
+    right:
+      7px;
+
+    bottom:
+      7px;
+
+    font-size:
+      .63rem;
+
+    opacity:
+      .8;
+
+    transform:
+      none;
+  }
+
+
+  .milla-gallery-item::after {
+
+    opacity:
+      .35;
+  }
+
+
+  /* ================================================
+     FOOTER
+  ================================================= */
+
+  .milla-gallery-footer {
+
+    margin-top:
+      25px;
+  }
+
+
+  .milla-gallery-footer small {
+
+    font-size:
+      .42rem;
+
+    letter-spacing:
+      .12em;
+  }
+
+
+  /* ================================================
+     MODAL MOBILE
+  ================================================= */
+
+  .milla-gallery-modal {
+
+    padding:
+      15px;
+  }
+
+
+  .milla-gallery-modal-dialog {
+
+    width:
+      100%;
+
+    height:
+      94vh;
+  }
+
+
+  .milla-gallery-modal-media {
+
+    height:
+      calc(100% - 50px);
+
+    padding:
+      45px 5px;
+  }
+
+
+  .milla-gallery-modal-media img {
+
+    max-width:
+      100%;
+
+    max-height:
+      100%;
+  }
+
+
+  .milla-gallery-modal-close {
+
+    width:
+      39px;
+
+    height:
+      39px;
+  }
+
+
+  .milla-gallery-modal-nav {
+
+    width:
+      44px;
+
+    height:
+      44px;
+
+    margin-top:
+      -22px;
+  }
+
+
+  .milla-gallery-modal-prev {
+
+    left:
+      0;
+  }
+
+
+  .milla-gallery-modal-next {
+
+    right:
+      0;
+  }
+
+
+  .milla-gallery-modal-counter {
+
+    top:
+      8px;
+
+    left:
+      3px;
+  }
+
+
+  .milla-gallery-modal-bottom {
+
+    font-size:
+      .43rem;
+  }
+
 }
