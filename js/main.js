@@ -1731,12 +1731,50 @@ async function loadMillaJobs() {
 
 
 /* ==========================================================
+   FORMATO DE TEXTO
+========================================================== */
+
+/*
+ * Primera letra del texto en mayúscula.
+ * Conserva el resto tal como viene de Google Sheets.
+ */
+function capitalizeMillaText(value) {
+
+  const text =
+    String(value || '').trim();
+
+  if (!text) return '';
+
+  return (
+    text.charAt(0).toUpperCase() +
+    text.slice(1)
+  );
+
+}
+
+
+/*
+ * Para requisitos:
+ * capitaliza la primera letra de cada línea.
+ */
+function capitalizeMillaLines(value) {
+
+  return String(value || '')
+    .split(/\r?\n/)
+    .map(line => capitalizeMillaText(line))
+    .filter(line => line !== '')
+    .join('\n');
+
+}
+
+/* ==========================================================
    RENDERIZAR TARJETAS
 ========================================================== */
 
 function renderMillaJobs(jobs) {
 
   if (!millaJobsList) return;
+
 
   // ==========================================
   // SIN VACANTES
@@ -1753,7 +1791,7 @@ function renderMillaJobs(jobs) {
 
         <p>
           Actualmente no contamos con posiciones abiertas.
-          Puedes enviarnos tu CV y considerararemos tu perfil
+          Puedes enviarnos tu CV y consideraremos tu perfil
           para futuras oportunidades.
         </p>
 
@@ -1774,44 +1812,162 @@ function renderMillaJobs(jobs) {
       const number =
         String(index + 1).padStart(2, '0');
 
+
+      /* ========================================
+         DATOS FORMATEADOS
+      ======================================== */
+
+      const vacante =
+        capitalizeMillaText(job.vacante);
+
+      const area =
+        capitalizeMillaText(job.area);
+
+      const ubicacion =
+        capitalizeMillaText(job.ubicacion);
+
+      const tipo =
+        capitalizeMillaText(job.tipo);
+
+      const descripcion =
+        capitalizeMillaText(job.descripcion);
+
+      const requisitos =
+        capitalizeMillaLines(job.requisitos);
+
+
+      /* ========================================
+         REQUISITOS
+      ======================================== */
+
+      const requirementsHTML =
+        requisitos
+          ? `
+            <div class="milla-job-requirements">
+
+              <span class="milla-job-requirements-title">
+                Requisitos
+              </span>
+
+              <div class="milla-job-requirements-list">
+
+                ${requisitos
+                  .split('\n')
+                  .map(requirement => `
+                    <span>
+                      <i></i>
+                      ${escapeMillaHTML(requirement)}
+                    </span>
+                  `)
+                  .join('')}
+
+              </div>
+
+            </div>
+          `
+          : '';
+
+
+      /* ========================================
+         TARJETA
+      ======================================== */
+
       return `
         <article
           class="milla-job-card milla-job-card-active"
-          data-job="${escapeMillaHTML(job.vacante)}"
-          data-job-area="${escapeMillaHTML(job.area)}"
+          data-job="${escapeMillaHTML(vacante)}"
+          data-job-area="${escapeMillaHTML(area)}"
         >
 
           <div class="milla-job-index">
             ${number}
           </div>
 
+
           <div class="milla-job-main">
 
             <span class="milla-job-type">
-              VACANTE ABIERTA
+              Vacante abierta
             </span>
 
+
             <h3>
-              ${escapeMillaHTML(job.vacante)}
+              ${escapeMillaHTML(vacante)}
             </h3>
 
-            <p class="milla-job-meta">
-              ${escapeMillaHTML(job.ubicacion)}
-              ·
-              ${escapeMillaHTML(job.tipo)}
-            </p>
 
-            <p>
-              ${escapeMillaHTML(job.descripcion)}
-            </p>
+            <!-- BADGES -->
+
+            <div class="milla-job-badges">
+
+
+              <!-- UBICACIÓN -->
+
+              ${
+                ubicacion
+                  ? `
+                    <span class="milla-job-badge">
+
+                      <iconify-icon
+                        icon="solar:map-point-outline"
+                      ></iconify-icon>
+
+                      ${escapeMillaHTML(ubicacion)}
+
+                    </span>
+                  `
+                  : ''
+              }
+
+
+              <!-- TIPO -->
+
+              ${
+                tipo
+                  ? `
+                    <span class="milla-job-badge">
+
+                      <iconify-icon
+                        icon="solar:clock-circle-outline"
+                      ></iconify-icon>
+
+                      ${escapeMillaHTML(tipo)}
+
+                    </span>
+                  `
+                  : ''
+              }
+
+            </div>
+
+
+            <!-- DESCRIPCIÓN -->
+
+            ${
+              descripcion
+                ? `
+                  <p class="milla-job-description">
+                    ${escapeMillaHTML(descripcion)}
+                  </p>
+                `
+                : ''
+            }
+
+
+            <!-- REQUISITOS -->
+
+            ${requirementsHTML}
 
           </div>
+
+
+          <!-- BOTÓN -->
 
           <button
             type="button"
             class="milla-job-arrow"
-            data-job-open="${escapeMillaHTML(job.vacante)}"
-            aria-label="Postularse a ${escapeMillaHTML(job.vacante)}"
+            data-job-open="${escapeMillaHTML(vacante)}"
+            aria-label="Postularse a ${escapeMillaHTML(vacante)}"
           >
 
             <iconify-icon
@@ -2002,6 +2158,84 @@ function resetMillaCareerForm() {
     });
 
 }
+
+/* ==========================================================
+   ÁREA DINÁMICA DESDE GOOGLE SHEETS
+========================================================== */
+
+function ensureMillaCareerAreaOption(areaName) {
+
+  if (
+    !millaCareerArea ||
+    !areaName
+  ) {
+    return;
+  }
+
+
+  const normalizedArea =
+    String(areaName).trim();
+
+
+  if (!normalizedArea) {
+    return;
+  }
+
+
+  /*
+   * Buscar si ya existe.
+   *
+   * Comparamos sin distinguir mayúsculas/minúsculas
+   * para evitar duplicados como:
+   *
+   * "General"
+   * "GENERAL"
+   * "general"
+   */
+
+  const existingOption =
+    Array.from(
+      millaCareerArea.options
+    ).find(
+      option =>
+        option.value.trim().toLowerCase() ===
+        normalizedArea.toLowerCase()
+    );
+
+
+  /*
+   * Si no existe, la creamos.
+   */
+
+  if (!existingOption) {
+
+    const newOption =
+      document.createElement(
+        'option'
+      );
+
+    newOption.value =
+      normalizedArea;
+
+    newOption.textContent =
+      normalizedArea;
+
+    millaCareerArea.appendChild(
+      newOption
+    );
+
+  }
+
+
+  /*
+   * Seleccionar la opción
+   */
+
+  millaCareerArea.value =
+    normalizedArea;
+
+}
+
 /* ==========================================================
    PREPARAR POSTULACIÓN
 ========================================================== */
@@ -2020,10 +2254,11 @@ function prepareMillaCareerApplication(
     return;
   }
 
+
   /*
-   * ================================================
+   * ========================================================
    * POSTULACIÓN A VACANTE
-   * ================================================
+   * ========================================================
    */
 
   if (jobName) {
@@ -2037,26 +2272,42 @@ function prepareMillaCareerApplication(
     millaCareerJobHint.textContent =
       'Postulación a una vacante publicada.';
 
+
     millaCareerJobField.classList.remove(
       'is-general'
     );
 
+
+    /*
+     * ==============================================
+     * ÁREA DINÁMICA
+     * ==============================================
+     */
 
     if (
       areaName &&
       millaCareerArea
     ) {
 
-      millaCareerArea.value =
-        areaName;
+      /*
+       * Crea la opción automáticamente
+       * si no existe.
+       */
+
+      ensureMillaCareerAreaOption(
+        areaName
+      );
+
+
+      /*
+       * Bloquear visualmente el selector.
+       */
 
       millaCareerArea.classList.add(
         'is-career-locked'
       );
 
-      /*
-       * Evita que pueda enfocarse con TAB
-       */
+
       millaCareerArea.setAttribute(
         'tabindex',
         '-1'
@@ -2064,14 +2315,15 @@ function prepareMillaCareerApplication(
 
     }
 
+
     return;
   }
 
 
   /*
-   * ================================================
+   * ========================================================
    * POSTULACIÓN GENERAL
-   * ================================================
+   * ========================================================
    */
 
   millaCareerJob.value =
@@ -2090,20 +2342,21 @@ function prepareMillaCareerApplication(
 
   if (millaCareerArea) {
 
-    millaCareerArea.value = '';
+    millaCareerArea.value =
+      '';
 
     millaCareerArea.classList.remove(
       'is-career-locked'
     );
 
-    /*
-     * Volvemos a permitir TAB
-     */
+
     millaCareerArea.removeAttribute(
       'tabindex'
     );
 
-    millaCareerArea.disabled = false;
+
+    millaCareerArea.disabled =
+      false;
 
   }
 

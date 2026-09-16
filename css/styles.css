@@ -13571,3 +13571,191 @@ iconify-icon {
   }
 
 }
+
+/* ==========================================================
+   REQUISITOS
+========================================================== */
+
+.milla-job-requirements {
+
+  margin-top:
+    18px;
+
+  padding-top:
+    16px;
+
+  border-top:
+    1px solid
+    rgba(23, 27, 29, .10);
+}
+
+
+.milla-job-requirements-title {
+
+  display:
+    block;
+
+  margin-bottom:
+    9px;
+
+  color:
+    #a07838;
+
+  font-size:
+    .55rem;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .15em;
+
+  text-transform:
+    uppercase;
+}
+
+
+.milla-job-requirements-list {
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    6px;
+}
+
+
+.milla-job-requirements-list span {
+
+  display:
+    flex;
+
+  align-items:
+    flex-start;
+
+  gap:
+    8px;
+
+  color:
+    #747a7c;
+
+  font-size:
+    .67rem;
+
+  line-height:
+    1.55;
+}
+
+
+.milla-job-requirements-list i {
+
+  flex:
+    0 0 auto;
+
+  width:
+    4px;
+
+  height:
+    4px;
+
+  margin-top:
+    .48em;
+
+  border-radius:
+    50%;
+
+  background:
+    #b88a43;
+}
+
+/* ==========================================================
+   BADGES — UBICACIÓN / TIPO
+========================================================== */
+
+.milla-job-badges {
+
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    7px;
+
+  margin:
+    12px 0 14px;
+}
+
+
+.milla-job-badge {
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  gap:
+    6px;
+
+  min-height:
+    27px;
+
+  padding:
+    0 9px;
+
+  border:
+    1px solid
+    rgba(23, 27, 29, .11);
+
+  background:
+    #f7f7f6;
+
+  color:
+    #777d7f;
+
+  font-size:
+    .57rem;
+
+  font-weight:
+    700;
+
+  line-height:
+    1;
+
+  white-space:
+    nowrap;
+
+  transition:
+    border-color .25s ease,
+    background .25s ease,
+    color .25s ease;
+}
+
+
+.milla-job-badge iconify-icon {
+
+  color:
+    #a07838;
+
+  font-size:
+    .9rem;
+}
+
+
+.milla-job-card:hover
+.milla-job-badge {
+
+  border-color:
+    rgba(160, 120, 56, .22);
+
+  background:
+    #fbfaf7;
+
+  color:
+    #616769;
+}
